@@ -25,4 +25,7 @@ test:
 lint:
 	flake8 . --max-line-length=100 --exclude=.venv,db/migrations,__pycache__
 
+frontend:
+	open frontend/index.html
+
 all: install db-init ingest embed train serve
