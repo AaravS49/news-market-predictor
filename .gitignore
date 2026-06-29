@@ -1,0 +1,13 @@
+.env
+__pycache__/
+*.pyc
+*.pyo
+chroma_store/
+model/checkpoints/
+.DS_Store
+*.egg-info/
+dist/
+build/
+.venv/
+venv/
+notebooks/.ipynb_checkpoints/
