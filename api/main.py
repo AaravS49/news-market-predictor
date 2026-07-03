@@ -7,6 +7,8 @@ from pathlib import Path
 
 import torch
 from fastapi import FastAPI, HTTPException
+from fastapi.middleware.cors import CORSMiddleware
+from fastapi.staticfiles import StaticFiles
 from pydantic import BaseModel
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
@@ -134,6 +136,12 @@ import api.middleware as _mw  # noqa: E402
 from api.middleware import LoggingMiddleware  # noqa: E402
 
 app.add_middleware(LoggingMiddleware)
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 
 
 # ── helpers ───────────────────────────────────────────────────────────────────
@@ -329,3 +337,8 @@ async def feedback(prediction_id: int, payload: FeedbackInput):
         "prediction_id": prediction_id,
         "actual_label": payload.actual_label,
     }
+
+
+# ── static frontend (must be mounted last) ───────────────────────────────────
+_FRONTEND = Path(__file__).resolve().parents[1] / "frontend"
+app.mount("/ui", StaticFiles(directory=str(_FRONTEND), html=True), name="frontend")
